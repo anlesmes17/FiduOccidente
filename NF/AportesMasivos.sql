@@ -12,5 +12,5 @@ SELECT distinct right(left(FECHA_ARCH,10),4) as FechaAdj,* FROM `favorable-mix-3
   WHEN FechaAdj="2020" OR FechaAdj="020 " Then 2020
   WHEN FechaAdj="2021" Then 2021
   ELSE NULL END AS FechaAporte,*
-  From BaseConFecha
+  From BaseConFechaMasivos
 --)
