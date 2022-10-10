@@ -1,0 +1,70 @@
+WITH
+
+
+################################################ Arreglo Fechas ###################################################################
+BaseConFechaIndividuales as (
+SELECT distinct right(left(FECHA_COMP,10),4) as FechaAdj,* FROM `favorable-mix-333022.FiduOccidente.20221007_Individuales` 
+)
+
+,FechaFinalIndividuales as(
+  Select distinct CASE
+  WHEN FechaAdj="2017" OR FechaAdj="017 " Then 2017
+  WHEN FechaAdj="2018" OR FechaAdj="018 " Then 2018
+  WHEN FechaAdj="2019" OR FechaAdj="019 " Then 2019
+  WHEN FechaAdj="2020" OR FechaAdj="020 " Then 2020
+  WHEN FechaAdj="2021" Then 2021
+  ELSE NULL END AS FechaAporte,*
+  From BaseConFechaIndividuales
+)
+
+
+,BaseConFechaMasivos as (
+SELECT distinct right(left(FECHA_ARCH,10),4) as FechaAdj,* FROM `favorable-mix-333022.FiduOccidente.20221007_Masivos` 
+)
+
+,FechaFinalMasivos as(
+  Select distinct CASE
+  WHEN FechaAdj="2017" OR FechaAdj="017 " Then 2017
+  WHEN FechaAdj="2018" OR FechaAdj="018 " Then 2018
+  WHEN FechaAdj="2019" OR FechaAdj="019 " Then 2019
+  WHEN FechaAdj="2020" OR FechaAdj="020 " Then 2020
+  WHEN FechaAdj="2021" Then 2021
+  ELSE NULL END AS FechaAporte,*
+  From BaseConFechaMasivos
+)
+
+,BaseConFechaNotasBancarias as (
+SELECT distinct right(left(FEC_REGISTRO,10),4) as FechaAdj,* FROM `favorable-mix-333022.FiduOccidente.20221007_NotasBancarias` 
+)
+
+,FechaFinalNotasBancarias as(
+  Select distinct CASE
+  WHEN FechaAdj="2017" OR FechaAdj="017 " Then 2017
+  WHEN FechaAdj="2018" OR FechaAdj="018 " Then 2018
+  WHEN FechaAdj="2019" OR FechaAdj="019 " Then 2019
+  WHEN FechaAdj="2020" OR FechaAdj="020 " Then 2020
+  WHEN FechaAdj="2021" Then 2021
+  ELSE 2021 END AS FechaAporte,*
+  From BaseConFechaNotasBancarias
+)
+
+
+################################################# Todos los Fideicomisos ##############################################################
+,Fideicomisos as(
+SELECT distinct *
+FROM
+(SELECT FechaAporte,Empresa FROM FechaFinalIndividuales
+UNION ALL
+SELECT FechaAporte,Fideicomiso FROM FechaFinalMasivos
+UNION ALL
+SELECT FechaAporte, Empresa FROM FechaFinalNotasBancarias
+))
+
+################################################## Aportes por fideicomiso #############################################################
+
+--,AportesIndividuales as(
+  Select distinct FechaAporte,Empresa,count(*)
+  From FechaFinalIndividuales
+  group by 1,2
+  order by 3
+--)
