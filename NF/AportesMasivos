@@ -1,10 +1,10 @@
 With
 
-BaseConFecha as (
+BaseConFechaMasivos as (
 SELECT distinct right(left(FECHA_ARCH,10),4) as FechaAdj,* FROM `favorable-mix-333022.FiduOccidente.20221007_Masivos` 
 )
 
---,FechaFinal as(
+--,FechaFinalMasivos as(
   Select distinct CASE
   WHEN FechaAdj="2017" OR FechaAdj="017 " Then 2017
   WHEN FechaAdj="2018" OR FechaAdj="018 " Then 2018
