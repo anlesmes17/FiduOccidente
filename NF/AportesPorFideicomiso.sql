@@ -95,9 +95,12 @@ SELECT FechaAporte, Empresa as Fideicomiso FROM FechaFinalNotasBancarias
   ON f.FechaAporte=m.FechaAporte AND f.Fideicomiso=m.Fideicomiso
 )
 
---,UnionNotasBancarias as(
+,UnionNotasBancarias as(
   Select f.*, AportNotasBancarias
   From UnionMasivos f left join AportesNotasBancarias n
   ON f.FechaAporte=n.FechaAporte AND Fideicomiso=n.Empresa
---)
+)
 
+Select * From UnionNotasBancarias
+Where FechaAporte Is not null
+Order by FechaAporte, 2
